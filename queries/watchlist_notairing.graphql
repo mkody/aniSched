@@ -4,7 +4,7 @@ query ($page: Int, $user: Int) {
       hasNextPage
       total
     }
-    mediaList(userId: $user, status: CURRENT) {
+    mediaList(userId: $user, status: CURRENT, sort: [ADDED_TIME, PRIORITY, MEDIA_ID]) {
       id
       progress
       media {

@@ -4,7 +4,7 @@ query ($weekStart: Int, $weekEnd: Int, $page: Int, $listIds: [Int]) {
       hasNextPage
       total
     }
-    airingSchedules(airingAt_greater: $weekStart, airingAt_lesser: $weekEnd, mediaId_in: $listIds) {
+    airingSchedules(airingAt_greater: $weekStart, airingAt_lesser: $weekEnd, mediaId_in: $listIds, sort: [MEDIA_ID, TIME]) {
       id
       episode
       media {
