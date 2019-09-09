@@ -4,7 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $accessToken = file_get_contents(__DIR__ . '/token.txt');
 
-$j = json_decode(file_get_contents('shows.json'));
+$j = json_decode(file_get_contents(__DIR__ . '/shows.json'));
 $startDate = (int) strtotime('last monday');
 $endDate = (int) strtotime('next monday');
 $http = new GuzzleHttp\Client;
@@ -88,5 +88,5 @@ foreach($sch as $s) {
 
 $j->saturday = array_values($shows);
 
-file_put_contents('shows.json', json_encode($j));
+file_put_contents(__DIR__ . '/shows.json', json_encode($j));
 echo "done";
