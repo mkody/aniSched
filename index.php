@@ -32,7 +32,7 @@ function _showHour ($m) {
         </section>
     </header>
     <div class="container">
-        <h3>Saturday</h3>
+        <h3>Saturday <small>(catch-up)</small></h3>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -78,7 +78,7 @@ function _showHour ($m) {
 
         <hr>
 
-        <h3>Sunday</h3>
+        <h3>Sunday <small>(airing)</small></h3>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
