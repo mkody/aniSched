@@ -1,4 +1,6 @@
 <?php
+if (file_exists(__DIR__ . '/token.txt')) die('already logged in');
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/secrets.php';
 

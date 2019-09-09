@@ -61,7 +61,7 @@ function _showHour ($m) {
         elseif ($show->media->duration <= 30) $sat += 30;
         else $sat += $show->media->duration;
 
-        if ($sat >= 4*60 && $sat < 5*60) {
+        if ($sat >= 3*60 && $sat < 5*60) {
 ?>
                 <tr>
                     <td><?= _showHour($sat) ?></td>
@@ -69,7 +69,7 @@ function _showHour ($m) {
                     <td>~ Break ~</td>
                 </tr>
 <?php
-            $sat = 6*60;
+            $sat = 8.5*60;
         }
     }
 ?>
