@@ -1,0 +1,22 @@
+query ($page: Int, $user: Int) {
+  Page(page: $page) {
+    pageInfo {
+      hasNextPage
+      total
+    }
+    mediaList(userId: $user, status: CURRENT) {
+      id
+      progress
+      media {
+        id
+        title {
+          romaji
+          english
+        }
+        format
+        duration
+        episodes
+      }
+    }
+  }
+}

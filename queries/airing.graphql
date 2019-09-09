@@ -1,7 +1,4 @@
-Query ($weekStart: Int, $weekEnd: Int, $page: Int, $listIds: [Int]) {
-  AniChartUser {
-    highlights
-  }
+query ($weekStart: Int, $weekEnd: Int, $page: Int, $listIds: [Int]) {
   Page(page: $page) {
     pageInfo {
       hasNextPage
@@ -10,23 +7,15 @@ Query ($weekStart: Int, $weekEnd: Int, $page: Int, $listIds: [Int]) {
     airingSchedules(airingAt_greater: $weekStart, airingAt_lesser: $weekEnd, mediaId_in: $listIds) {
       id
       episode
-      airingAt
       media {
         id
         title {
           romaji
-          native
           english
         }
         format
-        synonyms
         duration
         episodes
-        hashtag
-        coverImage {
-          extraLarge
-          color
-        }
       }
     }
   }

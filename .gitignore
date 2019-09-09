@@ -1,0 +1,17 @@
+# Node
+node_modules/
+.npm
+
+# Composer
+composer.phar
+/vendor/
+
+# Dev
+*.log
+.env
+.env.test
+
+# Ours
+secrets.php
+shows.json
+token.txt
