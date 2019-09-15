@@ -110,7 +110,7 @@ function _showHour ($m) {
         elseif ($show->media->duration <= 30) $sun += 30;
         else $sun += $show->media->duration;
 
-        if ($sun >= 4*60 && $sun < 5*60) {
+        if ($sun >= 3*60 && $sun < 5*60) {
 ?>
                 <tr>
                     <td><?= _showHour($sun) ?></td>
