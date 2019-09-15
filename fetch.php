@@ -48,10 +48,12 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
     ]
 ]);
 
+$inSun = [];
 $shows = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
     if ($s->media->format == 'MOVIE') continue;
+    $inSun[] = $s->media->id;
     $shows[$s->media->id] = $s;
 }
 
@@ -59,11 +61,10 @@ $j->sunday = array_values($shows);
 
 
 
-$query = file_get_contents(__DIR__ . '/queries/watchlist_notairing.graphql');
+$query = file_get_contents(__DIR__ . '/queries/watchlist.graphql');
 $variables = [
     "user" => $user,
-    "page" => 1,
-    "listIds" => $ids
+    "page" => 1
 ];
 $response = $http->request('POST', 'https://graphql.anilist.co', [
     'headers' => [
@@ -82,11 +83,16 @@ $sch = json_decode($response->getBody())->data->Page->mediaList;
 foreach($sch as $s) {
     if ($s->media->format == 'MOVIE' ||
         $s->media->format == 'MANGA' ||
-        in_array($s->media->id, $ids)) continue;
+        in_array($s->media->id, $inSun)) continue;
+    if ($s->media->nextAiringEpisode != null &&
+        $s->media->nextAiringEpisode->episode <= $s->progress + 1) {
+        // Didn't air yet so skip
+        continue;
+    }
     $shows[$s->media->id] = $s;
 }
 
 $j->saturday = array_values($shows);
 
 file_put_contents(__DIR__ . '/shows.json', json_encode($j));
-echo "done";
+echo "done\n";

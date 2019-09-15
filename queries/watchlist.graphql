@@ -16,6 +16,10 @@ query ($page: Int, $user: Int) {
         format
         duration
         episodes
+        nextAiringEpisode {
+          id
+          episode
+        }
       }
     }
   }
