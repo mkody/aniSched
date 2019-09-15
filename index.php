@@ -50,8 +50,10 @@ function _showHour ($m) {
                     <td><?= _showHour($sat) ?></td>
                     <td><?= $show->progress + 1 ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
                     <td>
-                        <a target="_blank" title="<?= $show->media->title->romaji ?>" href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?= $show->media->title->english ? $show->media->title->english . "\n" : $show->media->title->romaji . "\n" ?>
+                        <a target="_blank"
+                            title="<?= @$show->media->title->english ?>"
+                            href="https://anilist.co/anime/<?= $show->media->id ?>">
+                            <?= $show->media->title->romaji . "\n" ?>
                         </a>
                     </td>
                 </tr>
@@ -95,8 +97,10 @@ function _showHour ($m) {
                     <td><?= _showHour($sun) ?></td>
                     <td><?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
                     <td>
-                        <a target="_blank" title="<?= $show->media->title->romaji ?>" href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?= $show->media->title->english ? $show->media->title->english . "\n" : $show->media->title->romaji . "\n" ?>
+                        <a target="_blank"
+                            title="<?= @$show->media->title->english ?>"
+                            href="https://anilist.co/anime/<?= $show->media->id ?>">
+                            <?= $show->media->title->romaji . "\n" ?>
                         </a>
                     </td>
                 </tr>
