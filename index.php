@@ -51,9 +51,13 @@ function _showHour ($m) {
                     <td><?= $show->progress + 1 ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
                     <td>
                         <a target="_blank"
-                            title="<?= @$show->media->title->english ?>"
                             href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?= $show->media->title->romaji . "\n" ?>
+                            <?php echo $show->media->title->romaji;
+                            // If there's an English title and it's not the same as the Romaji one...
+                            if ($show->media->title->english &&
+                                strtolower($show->media->title->english) != strtolower($show->media->title->romaji))
+                                echo " <small>(" . $show->media->title->english . ")</small>\n";
+                            else echo "\n"; ?>
                         </a>
                     </td>
                 </tr>
@@ -98,9 +102,13 @@ function _showHour ($m) {
                     <td><?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
                     <td>
                         <a target="_blank"
-                            title="<?= @$show->media->title->english ?>"
                             href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?= $show->media->title->romaji . "\n" ?>
+                            <?php echo $show->media->title->romaji;
+                            // If there's an English title and it's not the same as the Romaji one...
+                            if ($show->media->title->english &&
+                                strtolower($show->media->title->english) != strtolower($show->media->title->romaji))
+                                echo " <small>(" . $show->media->title->english . ")</small>\n";
+                            else echo "\n"; ?>
                         </a>
                     </td>
                 </tr>

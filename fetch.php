@@ -6,11 +6,15 @@ require_once __DIR__ . '/vendor/autoload.php';
 $http = new GuzzleHttp\Client;
 // Load our access token from the login
 $accessToken = file_get_contents(__DIR__ . '/token.txt');
-// Set bounds for airing schedule
-$startDate = (int) strtotime('last monday');
-$endDate = (int) strtotime('next monday');
 // Create object where our schedule is saved
 $j = new stdClass();
+// Set bounds for airing schedule
+$startDate = (int) strtotime('last sunday');
+$endDate = (int) strtotime('next monday');
+$j->dates = array(
+    'start' => $startDate,
+    'end' => $endDate
+);
 
 // Ger our AniChart user and highlighted shows
 $query = file_get_contents(__DIR__ . '/queries/anichart.graphql');
@@ -85,7 +89,7 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
 $sun = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
-    // If we're late of more than one episode, skip
+    // If we're late by more than one (aired) episode, skip
     if (array_key_exists($s->media->id, $shows) &&
         $shows[$s->media->id]->progress < ($s->episode - 1)) continue;
     $sun[$s->media->id] = $s;
