@@ -44,7 +44,6 @@ function _showHour ($m) {
             <tbody>
 <?php
     foreach($shows->saturday as $show) {
-        if ($show->progress == 0) continue;
 ?>
                 <tr>
                     <td><?= _showHour($sat) ?></td>
