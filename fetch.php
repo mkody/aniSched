@@ -89,6 +89,8 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
 $sun = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
+    // Skip movies
+    if ($s->media->format == 'MOVIE') continue;
     // If we're late by more than one (aired) episode, skip
     if (array_key_exists($s->media->id, $shows) &&
         $shows[$s->media->id]->progress < ($s->episode - 1)) continue;
