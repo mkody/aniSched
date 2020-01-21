@@ -9,6 +9,7 @@ function _showHour ($m) {
     // Display time
     // If the minutes are over 60,
     // PHP will add an another hour by itself
+    global $startHour;
     $date = new DateTime('2001-01-01');
     $date->setTime($startHour, $m, 00);
     return $date->format('H:i') . "\n";
