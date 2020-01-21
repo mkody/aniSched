@@ -1,23 +1,28 @@
 <?php
 // sup
 $shows = json_decode(file_get_contents(__DIR__ . '/shows.json'));
+$startHour = 14;
 $sat = 0;
 $sun = 0;
 
 function _showHour ($m) {
+    // Display time
+    // If the minutes are over 60,
+    // PHP will add an another hour by itself
     $date = new DateTime('2001-01-01');
-    $date->setTime(14, $m, 00);
+    $date->setTime($startHour, $m, 00);
     return $date->format('H:i') . "\n";
 }
 
-function malSync ($str) {
+function _malSync ($str) {
+    // Extract the URL from the notes made by malSync
     $re = '/malSync::(.*)::/';
     preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
     return base64_decode($matches[1][0]);
 }
 
-function printDay ($show, $time) {
-    // Template
+function _printShow ($show, $time) {
+    // Template for a show line in the table
 ?>
                 <tr>
                     <td>
@@ -28,7 +33,7 @@ function printDay ($show, $time) {
         if (strpos($show->notes, 'malSync::') !== false) {
             $s = true;
 ?>
-                        <a href="<?= malSync($show->notes) ?>">
+                        <a href="<?= _malSync($show->notes) ?>">
     <?php // Intentionally leaving spaces to indent in output
         } else $s = false;
 ?>
@@ -84,7 +89,7 @@ function printDay ($show, $time) {
             <tbody>
 <?php
     foreach($shows->saturday as $show) {
-        printDay($show, $sat);
+        _printShow($show, $sat);
 
         if ($show->media->duration == null) $sat += 30;
         elseif ($show->media->duration <= 5) $sat += 5;
@@ -128,7 +133,7 @@ function printDay ($show, $time) {
             <tbody>
 <?php
     foreach($shows->sunday as $show) {
-        printDay($show, $sun);
+        _printShow($show, $sun);
 
         if ($show->media->duration == null) $sun += 30;
         elseif ($show->media->duration <= 5) $sun += 5;
