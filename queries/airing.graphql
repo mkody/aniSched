@@ -6,6 +6,7 @@ query ($weekStart: Int, $weekEnd: Int, $page: Int, $listIds: [Int]) {
     }
     airingSchedules(airingAt_greater: $weekStart, airingAt_lesser: $weekEnd, mediaId_in: $listIds, sort: [MEDIA_ID, TIME]) {
       id
+      airingAt
       episode
       media {
         id

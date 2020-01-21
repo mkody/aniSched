@@ -9,7 +9,7 @@ $accessToken = file_get_contents(__DIR__ . '/token.txt');
 // Create object where our schedule is saved
 $j = new stdClass();
 // Set bounds for airing schedule
-$startDate = (int) strtotime('last sunday');
+$startDate = (int) strtotime('last monday');
 $endDate = (int) strtotime('next monday');
 $j->dates = array(
     'start' => $startDate,
@@ -87,26 +87,44 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
 
 // Make our Sunday schedule from what's airing
 $sun = [];
+$sun_late = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
     // Skip movies
     if ($s->media->format == 'MOVIE') continue;
+
     // If we're late by more than one (aired) episode, skip
     if (array_key_exists($s->media->id, $shows) &&
         $shows[$s->media->id]->progress < ($s->episode - 1)) continue;
-    $sun[$s->media->id] = $s;
+
+    // Add to array
+    // If it's airing this sunday, we might need to add it to the end
+    $thisSunday = (new DateTime('this sunday'))->getTimestamp();
+    if ($s->airingAt > $thisSunday) $sun_late[$s->media->id] = $s;
+    else $sun[$s->media->id] = $s;
 }
+
+$sun = $sun + $sun_late;
 
 $j->sunday = array_values($sun);
 
 // Make our Saturday schedule with what's left
 $sat = [];
 foreach($shows as $s) {
-    // Skip if it's already in the sunday list
-    if (array_key_exists($s->media->id, $sun)) continue;
+    // If it's already in the sunday list, add notes and skip
+    if (array_key_exists($s->media->id, $sun)) {
+        $sun[$s->media->id]->notes = $s->notes;
+        continue;
+    }
+
     // Skip if future episode didn't air yet
     if ($s->media->nextAiringEpisode != null &&
         $s->media->nextAiringEpisode->episode <= $s->progress + 1) continue;
+
+    // Uniformize
+    $s->episode = $s->progress + 1;
+
+    // Add to array
     $sat[$s->media->id] = $s;
 }
 

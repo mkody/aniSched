@@ -7,7 +7,47 @@ $sun = 0;
 function _showHour ($m) {
     $date = new DateTime('2001-01-01');
     $date->setTime(14, $m, 00);
-    return $date->format('H:i');
+    return $date->format('H:i') . "\n";
+}
+
+function malSync ($str) {
+    $re = '/malSync::(.*)::/';
+    preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
+    return base64_decode($matches[1][0]);
+}
+
+function printDay ($show, $time) {
+    // Template
+?>
+                <tr>
+                    <td>
+                        <?= _showHour($time) ?>
+                    </td>
+                    <td>
+<?php
+        if (strpos($show->notes, 'malSync::') !== false) {
+            $s = true;
+?>
+                        <a href="<?= malSync($show->notes) ?>">
+    <?php // Intentionally leaving spaces to indent in output
+        } else $s = false;
+?>
+                        <?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes . "\n" : "?\n" ?>
+<?php if ($s) { ?>
+                        </a><?php echo "\n"; } ?>
+                    </td>
+                    <td>
+                        <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
+                            <?php echo $show->media->title->romaji;
+                            // If there's an English title and it's not the same as the Romaji one...
+                            if ($show->media->title->english &&
+                                strtolower($show->media->title->english) != strtolower($show->media->title->romaji))
+                                echo " <small>(" . $show->media->title->english . ")</small>\n";
+                            else echo "\n"; ?>
+                        </a>
+                    </td>
+                </tr>
+<?php
 }
 ?>
 <!DOCTYPE html>
@@ -44,24 +84,11 @@ function _showHour ($m) {
             <tbody>
 <?php
     foreach($shows->saturday as $show) {
-?>
-                <tr>
-                    <td><?= _showHour($sat) ?></td>
-                    <td><?= $show->progress + 1 ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
-                    <td>
-                        <a target="_blank"
-                            href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?php echo $show->media->title->romaji;
-                            // If there's an English title and it's not the same as the Romaji one...
-                            if ($show->media->title->english &&
-                                strtolower($show->media->title->english) != strtolower($show->media->title->romaji))
-                                echo " <small>(" . $show->media->title->english . ")</small>\n";
-                            else echo "\n"; ?>
-                        </a>
-                    </td>
-                </tr>
-<?php
+        printDay($show, $sat);
+
         if ($show->media->duration == null) $sat += 30;
+        elseif ($show->media->duration <= 5) $sat += 5;
+        elseif ($show->media->duration <= 10) $sat += 10;
         elseif ($show->media->duration <= 15) $sat += 15;
         elseif ($show->media->duration <= 30) $sat += 30;
         else $sat += $show->media->duration;
@@ -69,9 +96,15 @@ function _showHour ($m) {
         if ($sat >= 3*60 && $sat < 5*60) {
 ?>
                 <tr>
-                    <td><?= _showHour($sat) ?></td>
-                    <td>&nbsp;</td>
-                    <td>~ Break ~</td>
+                    <td>
+                        <?= _showHour($sat) ?>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        ~ Break ~
+                    </td>
                 </tr>
 <?php
             $sat = 8.5*60;
@@ -95,24 +128,11 @@ function _showHour ($m) {
             <tbody>
 <?php
     foreach($shows->sunday as $show) {
-?>
-                <tr>
-                    <td><?= _showHour($sun) ?></td>
-                    <td><?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes : '?' ?></td>
-                    <td>
-                        <a target="_blank"
-                            href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?php echo $show->media->title->romaji;
-                            // If there's an English title and it's not the same as the Romaji one...
-                            if ($show->media->title->english &&
-                                strtolower($show->media->title->english) != strtolower($show->media->title->romaji))
-                                echo " <small>(" . $show->media->title->english . ")</small>\n";
-                            else echo "\n"; ?>
-                        </a>
-                    </td>
-                </tr>
-<?php
+        printDay($show, $sun);
+
         if ($show->media->duration == null) $sun += 30;
+        elseif ($show->media->duration <= 5) $sun += 5;
+        elseif ($show->media->duration <= 10) $sun += 10;
         elseif ($show->media->duration <= 15) $sun += 15;
         elseif ($show->media->duration <= 30) $sun += 30;
         else $sun += $show->media->duration;
@@ -120,9 +140,15 @@ function _showHour ($m) {
         if ($sun >= 3*60 && $sun < 5*60) {
 ?>
                 <tr>
-                    <td><?= _showHour($sun) ?></td>
-                    <td>&nbsp;</td>
-                    <td>~ Break ~</td>
+                    <td>
+                        <?= _showHour($sun) ?>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        ~ Break ~
+                    </td>
                 </tr>
 <?php
             $sun = 6*60;
