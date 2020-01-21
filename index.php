@@ -18,7 +18,12 @@ function _malSync ($str) {
     // Extract the URL from the notes made by malSync
     $re = '/malSync::(.*)::/';
     preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
-    return base64_decode($matches[1][0]);
+    $url = base64_decode($matches[1][0]);
+    $domain = parse_url($url, PHP_URL_HOST);
+    return [
+      url => $url,
+      icon => 'https://www.google.com/s2/favicons?domain=' . $domain
+    ];
 }
 
 function _printShow ($show, $time) {
@@ -31,14 +36,15 @@ function _printShow ($show, $time) {
                     <td>
 <?php
         if (strpos($show->notes, 'malSync::') !== false) {
-            $s = true;
+            $mal = _malSync($show->notes);
 ?>
-                        <a href="<?= _malSync($show->notes) ?>">
+                        <a href="<?= $mal['url'] ?>">
+                          <img class="icon" src="<?= $mal['icon'] ?>">
     <?php // Intentionally leaving spaces to indent in output
-        } else $s = false;
+        } else $mal = null;
 ?>
                         <?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes . "\n" : "?\n" ?>
-<?php if ($s) { ?>
+<?php if ($mal) { ?>
                         </a><?php echo "\n"; } ?>
                     </td>
                     <td>

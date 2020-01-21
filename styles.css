@@ -1,3 +1,9 @@
 th.tcol {
     width: 80px;
 }
+
+img.icon {
+    height: 16px;
+    vertical-align: -2px;
+    width: 16px;
+}
