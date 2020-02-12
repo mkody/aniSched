@@ -105,7 +105,8 @@ function _printShow ($show, $time) {
         elseif ($show->media->duration <= 30) $sat += 30;
         else $sat += $show->media->duration;
 
-        if ($sat >= 3*60 && $sat < 5*60) {
+        // Break after 2 hours
+        if ($sat >= 2*60 && $sat < 3*60) {
 ?>
                 <tr>
                     <td>
@@ -119,6 +120,23 @@ function _printShow ($show, $time) {
                     </td>
                 </tr>
 <?php
+            $sat = 3*60;
+        // Break before going to eat
+        } else if ($sat >= 4.5*60 && $sat < 7*60) {
+?>
+                <tr>
+                    <td>
+                        <?= _showHour($sat) ?>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        ~ Break ~
+                    </td>
+                </tr>
+<?php
+            // Moved up because I have thing to do
             $sat = 8.5*60;
         }
     }
@@ -149,7 +167,8 @@ function _printShow ($show, $time) {
         elseif ($show->media->duration <= 30) $sun += 30;
         else $sun += $show->media->duration;
 
-        if ($sun >= 3*60 && $sun < 5*60) {
+        // Break after 2 hours
+        if ($sun >= 2*60 && $sun < 3*60) {
 ?>
                 <tr>
                     <td>
@@ -163,7 +182,23 @@ function _printShow ($show, $time) {
                     </td>
                 </tr>
 <?php
-            $sun = 6*60;
+            $sun = 3*60;
+        // Break before going to eat
+        } else if ($sun >= 4.5*60 && $sun < 7*60) {
+?>
+                <tr>
+                    <td>
+                        <?= _showHour($sun) ?>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        ~ Break ~
+                    </td>
+                </tr>
+<?php
+            $sun = 7*60;
         }
     }
 ?>
