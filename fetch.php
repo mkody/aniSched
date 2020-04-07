@@ -94,7 +94,7 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
 ]);
 
 // Make our Sunday schedule from what's airing
-$sun = [];
+$airing = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
     // Skip movies
@@ -105,18 +105,15 @@ foreach($sch as $s) {
         $shows[$s->media->id]->progress < ($s->episode - 1)) continue;
 
     // Add to array
-    $sun[$s->media->id] = $s;
+    $airing[$s->media->id] = $s;
 }
 
-$j->sunday = array_values($sun);
-usort($j->sunday, 'sortByAirTime');
-
-// Make our Saturday schedule with what's left
-$sat = [];
+// Make our catch up schedule with what's left
+$catchup = [];
 foreach($shows as $s) {
     // If it's already in the sunday list, add notes and skip
-    if (array_key_exists($s->media->id, $sun)) {
-        $sun[$s->media->id]->notes = $s->notes;
+    if (array_key_exists($s->media->id, $airing)) {
+        $airing[$s->media->id]->notes = $s->notes;
         continue;
     }
 
@@ -128,10 +125,12 @@ foreach($shows as $s) {
     $s->episode = $s->progress + 1;
 
     // Add to array
-    $sat[$s->media->id] = $s;
+    $catchup[$s->media->id] = $s;
 }
 
-$j->saturday = array_values($sat);
+$j->catchup = array_values($catchup);
+$j->airing = array_values($airing);
+usort($j->airing, 'sortByAirTime');
 
 // Save everything
 file_put_contents(__DIR__ . '/shows.json', json_encode($j));

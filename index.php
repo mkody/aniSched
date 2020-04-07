@@ -104,7 +104,7 @@ foreach ($period as $dt) {
     $i = 0;
 
     if ($dt->format('N') >= 6) {
-        $min += ceil(count($shows->saturday) / 2);
+        $min += ceil(count($shows->catchup) / 2);
         $startHour = $weekendStartHour;
     }
 ?>
@@ -119,24 +119,24 @@ foreach ($period as $dt) {
             </thead>
             <tbody>
 <?php
-    foreach ($shows->sunday as $show) {
+    foreach ($shows->airing as $show) {
         $air = $show->airingAt + 7200; // Add 2 hours for the release delay
         $dt->setTime($startHour, $m, 00);
         if ($air < $dt->getTimestamp()) {
             _printShow($show, $dt, true);
-            $shows->sunday = unsetValue($shows->sunday, $show);
+            $shows->airing = unsetValue($shows->airing, $show);
 
             $m += _dur($show->media->duration);
             $i++;
         }
     }
 
-    foreach ($shows->saturday as $show) {
+    foreach ($shows->catchup as $show) {
         $dt->setTime($startHour, $m, 00);
 
         if ($i < $min) {
             _printShow($show, $dt);
-            $shows->saturday = unsetValue($shows->saturday, $show);
+            $shows->catchup = unsetValue($shows->catchup, $show);
 
             $m += _dur($show->media->duration);
             $i++;
@@ -145,10 +145,10 @@ foreach ($period as $dt) {
 
     // Sunday leftovers
     if ($dt->format('N') == 7) {
-        foreach ($shows->sunday as $show) {
+        foreach ($shows->airing as $show) {
             $dt->setTimestamp($show->airingAt + 7200); // Add 2 hours for the release delay
             _printShow($show, $dt, true);
-            $shows->sunday = unsetValue($shows->sunday, $show);
+            $shows->airing = unsetValue($shows->airing, $show);
             $m += _dur($show->media->duration);
         }
     }

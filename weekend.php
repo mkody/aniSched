@@ -85,7 +85,7 @@ function _printShow ($show, $time) {
         </section>
     </header>
     <div class="container">
-        <h3>Saturday <small>(catch-up)</small></h3>
+        <h3>Saturday <small>(catch up)</small></h3>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -96,7 +96,7 @@ function _printShow ($show, $time) {
             </thead>
             <tbody>
 <?php
-    foreach($shows->saturday as $show) {
+    foreach($shows->catchup as $show) {
         _printShow($show, $sat);
 
         if ($show->media->duration == null) $sat += 30;
@@ -158,7 +158,7 @@ function _printShow ($show, $time) {
             </thead>
             <tbody>
 <?php
-    foreach($shows->sunday as $show) {
+    foreach($shows->airing as $show) {
         _printShow($show, $sun);
 
         if ($show->media->duration == null) $sun += 30;
