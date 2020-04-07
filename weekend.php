@@ -145,8 +145,6 @@ function _printShow ($show, $time) {
             </tbody>
         </table>
 
-        <hr>
-
         <h3>Sunday <small>(airing)</small></h3>
         <table class="table table-striped table-hover">
             <thead>

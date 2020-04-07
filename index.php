@@ -1,6 +1,6 @@
 <?php
 // sup
-$startHour = 20;
+$startHour = 21;
 $weekendStartHour = 14;
 $min = 2; // how much anime should you *at least* watch every day
 

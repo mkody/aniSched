@@ -1,9 +1,17 @@
+body {
+    padding-bottom: 2em;
+}
+
 h1 {
-    margin: .5em 0 0;
+    margin: 0;
 }
 
 h3 {
     margin: 1em 0 0;
+}
+
+.navbar {
+    margin-top: 1em;
 }
 
 .navbar-section {
