@@ -2,6 +2,14 @@
 if (PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) die('cli only');
 require_once __DIR__ . '/vendor/autoload.php';
 
+function sortByAirTime($a, $b) {
+    $a = $a->airingAt;
+    $b = $b->airingAt;
+
+    if ($a == $b) return 0;
+    return ($a < $b) ? -1 : 1;
+}
+
 // Load up the HTTP client
 $http = new GuzzleHttp\Client;
 // Load our access token from the login
@@ -87,7 +95,6 @@ $response = $http->request('POST', 'https://graphql.anilist.co', [
 
 // Make our Sunday schedule from what's airing
 $sun = [];
-$sun_late = [];
 $sch = json_decode($response->getBody())->data->Page->airingSchedules;
 foreach($sch as $s) {
     // Skip movies
@@ -98,15 +105,11 @@ foreach($sch as $s) {
         $shows[$s->media->id]->progress < ($s->episode - 1)) continue;
 
     // Add to array
-    // If it's airing this sunday, we might need to add it to the end
-    $thisSunday = (new DateTime('this sunday'))->getTimestamp();
-    if ($s->airingAt > $thisSunday) $sun_late[$s->media->id] = $s;
-    else $sun[$s->media->id] = $s;
+    $sun[$s->media->id] = $s;
 }
 
-$sun = $sun + $sun_late;
-
 $j->sunday = array_values($sun);
+usort($j->sunday, 'sortByAirTime');
 
 // Make our Saturday schedule with what's left
 $sat = [];

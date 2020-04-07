@@ -1,18 +1,15 @@
 <?php
 // sup
-$shows = json_decode(file_get_contents(__DIR__ . '/shows.json'));
-$startHour = 14;
-$sat = 0;
-$sun = 0;
+$startHour = 20;
+$weekendStartHour = 14;
+$min = 2; // how much anime should you *at least* watch every day
 
-function _showHour ($m) {
-    // Display time
-    // If the minutes are over 60,
-    // PHP will add an another hour by itself
-    global $startHour;
-    $date = new DateTime('2001-01-01');
-    $date->setTime($startHour, $m, 00);
-    return $date->format('H:i') . "\n";
+// functions
+function unsetValue(array $array, $value, $strict = TRUE) {
+    if (($key = array_search($value, $array, $strict)) !== FALSE) {
+        unset($array[$key]);
+    }
+    return $array;
 }
 
 function _malSync ($str) {
@@ -22,17 +19,17 @@ function _malSync ($str) {
     $url = base64_decode($matches[1][0]);
     $domain = parse_url($url, PHP_URL_HOST);
     return [
-      url => $url,
-      icon => 'https://www.google.com/s2/favicons?domain=' . $domain
+      "url" => $url,
+      "icon" => 'https://www.google.com/s2/favicons?domain=' . $domain
     ];
 }
 
-function _printShow ($show, $time) {
+function _printShow ($show, $time, $isNew=false) {
     // Template for a show line in the table
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($time) ?>
+                        <?= $time->format('H:i') ?>
                     </td>
                     <td>
 <?php
@@ -50,6 +47,7 @@ function _printShow ($show, $time) {
                     </td>
                     <td>
                         <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
+                            <?= $isNew ? '<small>[NEW]</small>' : '' ?>
                             <?php echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
@@ -76,6 +74,7 @@ function _printShow ($show, $time) {
 <body>
     <header class="navbar">
         <section class="navbar-section">
+            <a href="weekend.php">Weekend view</a>
         </section>
         <section class="navbar-center">
             <h1>aniSched</h1>
@@ -84,7 +83,23 @@ function _printShow ($show, $time) {
         </section>
     </header>
     <div class="container">
-        <h3>Saturday <small>(catch-up)</small></h3>
+<?php
+$shows = json_decode(file_get_contents(__DIR__ . '/shows.json'));
+$startDate = new DateTime('@' . strtotime('last monday'));
+$endDate = new DateTime('@' . strtotime('next monday'));
+$interval = DateInterval::createFromDateString('1 day');
+$period = new DatePeriod($startDate, $interval, $endDate);
+
+foreach ($period as $dt) {
+    $m = 0;
+    $i = 0;
+
+    if ($dt->format('N') >= 6) {
+        $min += ceil(count($shows->saturday) / 2);
+        $startHour = $weekendStartHour;
+    }
+?>
+        <h3><?= $dt->format("l d") ?></h3>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -95,115 +110,45 @@ function _printShow ($show, $time) {
             </thead>
             <tbody>
 <?php
-    foreach($shows->saturday as $show) {
-        _printShow($show, $sat);
+    foreach ($shows->sunday as $show) {
+        $air = $show->airingAt;
+        $dt->setTime($startHour, $m, 00);
+        if ($air < $dt->getTimestamp()) {
+            _printShow($show, $dt, true);
+            $shows->sunday = unsetValue($shows->sunday, $show);
 
-        if ($show->media->duration == null) $sat += 30;
-        elseif ($show->media->duration <= 5) $sat += 5;
-        elseif ($show->media->duration <= 10) $sat += 10;
-        elseif ($show->media->duration <= 15) $sat += 15;
-        elseif ($show->media->duration <= 30) $sat += 30;
-        else $sat += $show->media->duration;
+            $m += $show->media->duration;
+            $i++;
+        }
+    }
 
-        // Break after 2 hours
-        if ($sat >= 2*60 && $sat < 3*60) {
-?>
-                <tr>
-                    <td>
-                        <?= _showHour($sat) ?>
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        ~ Break ~
-                    </td>
-                </tr>
-<?php
-            $sat = 3*60;
-        // Break before going to eat
-        } else if ($sat >= 4.5*60 && $sat < 7*60) {
-?>
-                <tr>
-                    <td>
-                        <?= _showHour($sat) ?>
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        ~ Break ~
-                    </td>
-                </tr>
-<?php
-            // Moved up because I have thing to do
-            $sat = 8.5*60;
+    foreach ($shows->saturday as $show) {
+        $dt->setTime($startHour, $m, 00);
+
+        if ($i < $min) {
+            _printShow($show, $dt);
+            $shows->saturday = unsetValue($shows->saturday, $show);
+
+            $m += $show->media->duration;
+            $i++;
+        }
+    }
+
+    // Sunday leftovers
+    if ($dt->format('N') == 7) {
+        foreach ($shows->sunday as $show) {
+            $dt->setTimestamp($show->airingAt + 7200); // Add 2 hours for the release delay
+            _printShow($show, $dt, true);
+            $shows->sunday = unsetValue($shows->sunday, $show);
+            $m += $show->media->duration;
         }
     }
 ?>
             </tbody>
         </table>
-
-        <hr>
-
-        <h3>Sunday <small>(airing)</small></h3>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="tcol">Time</th>
-                    <th class="tcol">Episode</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
 <?php
-    foreach($shows->sunday as $show) {
-        _printShow($show, $sun);
-
-        if ($show->media->duration == null) $sun += 30;
-        elseif ($show->media->duration <= 5) $sun += 5;
-        elseif ($show->media->duration <= 10) $sun += 10;
-        elseif ($show->media->duration <= 15) $sun += 15;
-        elseif ($show->media->duration <= 30) $sun += 30;
-        else $sun += $show->media->duration;
-
-        // Break after 2 hours
-        if ($sun >= 2*60 && $sun < 3*60) {
+}
 ?>
-                <tr>
-                    <td>
-                        <?= _showHour($sun) ?>
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        ~ Break ~
-                    </td>
-                </tr>
-<?php
-            $sun = 3*60;
-        // Break before going to eat
-        } else if ($sun >= 4.5*60 && $sun < 7*60) {
-?>
-                <tr>
-                    <td>
-                        <?= _showHour($sun) ?>
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        ~ Break ~
-                    </td>
-                </tr>
-<?php
-            $sun = 7*60;
-        }
-    }
-?>
-            </tbody>
-        </table>
     </div>
 </body>
 </html>
