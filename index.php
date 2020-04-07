@@ -12,6 +12,15 @@ function unsetValue(array $array, $value, $strict = TRUE) {
     return $array;
 }
 
+function _dur ($dur) {
+    if ($dur == null) return 30;
+    elseif ($dur <= 5) return 5;
+    elseif ($dur <= 10) return 10;
+    elseif ($dur <= 15) return 15;
+    elseif ($dur <= 30) return 30;
+    else return $dur;
+}
+
 function _malSync ($str) {
     // Extract the URL from the notes made by malSync
     $re = '/malSync::(.*)::/';
@@ -111,13 +120,13 @@ foreach ($period as $dt) {
             <tbody>
 <?php
     foreach ($shows->sunday as $show) {
-        $air = $show->airingAt;
+        $air = $show->airingAt + 7200; // Add 2 hours for the release delay
         $dt->setTime($startHour, $m, 00);
         if ($air < $dt->getTimestamp()) {
             _printShow($show, $dt, true);
             $shows->sunday = unsetValue($shows->sunday, $show);
 
-            $m += $show->media->duration;
+            $m += _dur($show->media->duration);
             $i++;
         }
     }
@@ -129,7 +138,7 @@ foreach ($period as $dt) {
             _printShow($show, $dt);
             $shows->saturday = unsetValue($shows->saturday, $show);
 
-            $m += $show->media->duration;
+            $m += _dur($show->media->duration);
             $i++;
         }
     }
@@ -140,7 +149,7 @@ foreach ($period as $dt) {
             $dt->setTimestamp($show->airingAt + 7200); // Add 2 hours for the release delay
             _printShow($show, $dt, true);
             $shows->sunday = unsetValue($shows->sunday, $show);
-            $m += $show->media->duration;
+            $m += _dur($show->media->duration);
         }
     }
 ?>
