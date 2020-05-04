@@ -17,7 +17,7 @@ $accessToken = file_get_contents(__DIR__ . '/token.txt');
 // Create object where our schedule is saved
 $j = new stdClass();
 // Set bounds for airing schedule
-$startDate = (int) strtotime('last monday');
+$startDate = (int) strtotime('this monday');
 $endDate = (int) strtotime('next monday');
 $j->dates = array(
     'start' => $startDate,

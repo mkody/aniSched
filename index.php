@@ -94,8 +94,8 @@ function _printShow ($show, $time, $isNew=false) {
     <div class="container">
 <?php
 $shows = json_decode(file_get_contents(__DIR__ . '/shows.json'));
-$startDate = new DateTime('@' . strtotime('last monday'));
-$endDate = new DateTime('@' . strtotime('next monday'));
+$startDate = new DateTime('@' . $shows->dates->start);
+$endDate = new DateTime('@' . $shows->dates->end);
 $interval = DateInterval::createFromDateString('1 day');
 $period = new DatePeriod($startDate, $interval, $endDate);
 
