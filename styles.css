@@ -10,8 +10,10 @@ h3 {
     margin: 1em 0 0;
 }
 
-a {
-  color: #807fe2; /* Same as a:visited */
+a,
+a:hover {
+    /* Same as a:visited */
+    color: #807fe2;
 }
 
 .navbar {
