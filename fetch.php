@@ -11,14 +11,14 @@ function sortByAirTime($a, $b) {
 }
 
 // Load up the HTTP client
-$http = new GuzzleHttp\Client;
+$http = new \GuzzleHttp\Client;
 // Load our access token from the login
 $accessToken = file_get_contents(__DIR__ . '/token.txt');
 // Create object where our schedule is saved
 $j = new stdClass();
 // Set bounds for airing schedule
 $startDate = (int) strtotime('this monday');
-$endDate = (int) strtotime('next monday');
+$endDate = $startDate + 604800;
 $j->dates = array(
     'start' => $startDate,
     'end' => $endDate
