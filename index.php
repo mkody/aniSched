@@ -1,44 +1,17 @@
 <?php
+require 'funcs.php';
+
 // sup
 $startHour = 21;
 $weekendStartHour = 14;
 $min = 2; // how much anime should you *at least* watch every day
 
-// functions
-function unsetValue(array $array, $value, $strict = TRUE) {
-    if (($key = array_search($value, $array, $strict)) !== FALSE) {
-        unset($array[$key]);
-    }
-    return $array;
-}
-
-function _dur ($dur) {
-    if ($dur == null) return 30;
-    elseif ($dur <= 5) return 5;
-    elseif ($dur <= 10) return 10;
-    elseif ($dur <= 15) return 15;
-    elseif ($dur <= 30) return 30;
-    else return $dur;
-}
-
-function _malSync ($str) {
-    // Extract the URL from the notes made by malSync
-    $re = '/malSync::(.*)::/';
-    preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
-    $url = base64_decode($matches[1][0]);
-    $domain = parse_url($url, PHP_URL_HOST);
-    return [
-      "url" => $url,
-      "icon" => 'https://www.google.com/s2/favicons?domain=' . $domain
-    ];
-}
-
+// template
 function _printShow ($show, $time, $isNew=false) {
-    // Template for a show line in the table
 ?>
                 <tr>
                     <td>
-                        <?= $time->format('H:i') ?>
+                        <?= $time->format('H:i') . "\n" ?>
                     </td>
                     <td>
 <?php
@@ -47,7 +20,7 @@ function _printShow ($show, $time, $isNew=false) {
 ?>
                         <a href="<?= $mal['url'] ?>">
                           <img class="icon" src="<?= $mal['icon'] ?>">
-    <?php // Intentionally leaving spaces to indent in output
+   <?php // Intentionally leaving spaces to indent in output
         } else $mal = null;
 ?>
                         <?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes . "\n" : "?\n" ?>
@@ -56,8 +29,9 @@ function _printShow ($show, $time, $isNew=false) {
                     </td>
                     <td>
                         <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?= $isNew ? '<small>[NEW]</small>' : '' ?>
-                            <?php echo $show->media->title->romaji;
+                            <?php
+                            if ($isNew) echo '<small>[NEW]</small> ';
+                            echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
                                 strtolower($show->media->title->english) != strtolower($show->media->title->romaji))

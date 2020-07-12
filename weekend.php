@@ -1,34 +1,14 @@
 <?php
+require 'funcs.php';
+
 // sup
 $shows = json_decode(file_get_contents(__DIR__ . '/shows.json'));
 $startHour = 14;
 $sat = 0;
 $sun = 0;
 
-function _showHour ($m) {
-    // Display time
-    // If the minutes are over 60,
-    // PHP will add an another hour by itself
-    global $startHour;
-    $date = new DateTime('2001-01-01');
-    $date->setTime($startHour, $m, 00);
-    return $date->format('H:i') . "\n";
-}
-
-function _malSync ($str) {
-    // Extract the URL from the notes made by malSync
-    $re = '/malSync::(.*)::/';
-    preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
-    $url = base64_decode($matches[1][0]);
-    $domain = parse_url($url, PHP_URL_HOST);
-    return [
-      "url" => $url,
-      "icon" => 'https://www.google.com/s2/favicons?domain=' . $domain
-    ];
-}
-
+// template
 function _printShow ($show, $time) {
-    // Template for a show line in the table
 ?>
                 <tr>
                     <td>
