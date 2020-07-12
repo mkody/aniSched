@@ -36,6 +36,12 @@ function _icon ($domain) {
         case 'wakanim.tv':
         case 'www.wakanim.tv':
             return 'icons/wakanim.png';
+        case 'primevideo.com':
+        case 'www.primevideo.com':
+            return 'icons/primevideo.png';
+        case 'netflix.com':
+        case 'www.netflix.com':
+            return 'icons/netflix.png';
         default:
             return 'https://www.google.com/s2/favicons?domain=' . $domain;
     }
