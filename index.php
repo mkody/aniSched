@@ -11,7 +11,7 @@ function _printShow ($show, $time, $isNew=false) {
 ?>
                 <tr>
                     <td>
-                        <?= $time->format('H:i') . "\n" ?>
+                        <time><?= $time->format('H:i') ?></time>
                     </td>
                     <td>
 <?php

@@ -10,6 +10,10 @@ h3 {
     margin: 1em 0 0;
 }
 
+a {
+  color: #807fe2; /* Same as a:visited */
+}
+
 .navbar {
     margin-top: 1em;
 }
@@ -26,4 +30,23 @@ img.icon {
     height: 16px;
     vertical-align: -2px;
     width: 16px;
+}
+
+/* Dark color scheme */
+@media (prefers-color-scheme: dark) { 
+    body {
+        /* Keeping Spectre's color scheme */
+        background: #303742;
+        color: #f7f8f9;
+    }
+
+    .table.table-striped tbody tr:nth-of-type(odd) {
+        /* From Bootstrap 4 */
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .table.table-hover tbody tr:hover {
+        /* From Bootstrap 4 */
+        background: rgba(255, 255, 255, 0.075);
+    }
 }

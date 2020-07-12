@@ -12,7 +12,7 @@ function _printShow ($show, $time) {
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($time) ?>
+                        <time><?= _showHour($time) ?></time>
                     </td>
                     <td>
 <?php
@@ -21,7 +21,7 @@ function _printShow ($show, $time) {
 ?>
                         <a href="<?= $mal['url'] ?>">
                           <img class="icon" src="<?= $mal['icon'] ?>">
-    <?php // Intentionally leaving spaces to indent in output
+   <?php // Intentionally leaving spaces to indent in output
         } else $mal = null;
 ?>
                         <?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes . "\n" : "?\n" ?>

@@ -22,7 +22,7 @@ function _showHour ($m) {
     global $startHour;
     $date = new DateTime('2001-01-01');
     $date->setTime($startHour, $m, 00);
-    return $date->format('H:i') . "\n";
+    return $date->format('H:i');
 }
 
 function _icon ($domain) {
