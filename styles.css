@@ -34,6 +34,11 @@ img.icon {
     width: 16px;
 }
 
+i.noicon {
+    display: inline-block;
+    width: 16px;
+}
+
 /* Dark color scheme */
 @media (prefers-color-scheme: dark) { 
     body {

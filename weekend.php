@@ -20,9 +20,14 @@ function _printShow ($show, $time) {
             $mal = _malSync($show->notes);
 ?>
                         <a href="<?= $mal['url'] ?>">
-                          <img class="icon" src="<?= $mal['icon'] ?>">
-   <?php // Intentionally leaving spaces to indent in output
-        } else $mal = null;
+                            <img class="icon" src="<?= $mal['icon'] ?>">
+    <?php // Intentionally leaving spaces to indent in output
+        } else {
+            $mal = null;
+?>
+                        <i class="noicon"></i>
+<?php
+        }
 ?>
                         <?= $show->episode ?>/<?= $show->media->episodes ? $show->media->episodes . "\n" : "?\n" ?>
 <?php if ($mal) { ?>
