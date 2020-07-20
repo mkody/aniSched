@@ -42,6 +42,9 @@ function _icon ($domain) {
         case 'netflix.com':
         case 'www.netflix.com':
             return 'icons/netflix.png';
+        case 'nyaa.si':
+        case 'www.nyaa.si':
+            return 'icons/nyaasi.png';
         default:
             return 'https://www.google.com/s2/favicons?domain=' . $domain;
     }
