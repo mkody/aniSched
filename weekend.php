@@ -96,7 +96,7 @@ function _printShow ($show, $time) {
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($sat) ?>
+                        <time><?= _showHour($sat) ?></time>
                     </td>
                     <td>
                         &nbsp;
@@ -112,7 +112,7 @@ function _printShow ($show, $time) {
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($sat) ?>
+                        <time><?= _showHour($sat) ?></time>
                     </td>
                     <td>
                         &nbsp;
@@ -156,7 +156,7 @@ function _printShow ($show, $time) {
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($sun) ?>
+                        <time><?= _showHour($sun) ?></time>
                     </td>
                     <td>
                         &nbsp;
@@ -172,7 +172,7 @@ function _printShow ($show, $time) {
 ?>
                 <tr>
                     <td>
-                        <?= _showHour($sun) ?>
+                        <time><?= _showHour($sun) ?></time>
                     </td>
                     <td>
                         &nbsp;
