@@ -11,6 +11,8 @@ h3 {
 }
 
 a,
+a:active,
+a:focus,
 a:hover {
     /* Same as a:visited */
     color: #807fe2;
@@ -39,11 +41,19 @@ i.noicon {
     width: 16px;
 }
 
+small.tag {
+    color: initial;
+}
+
 /* Dark color scheme */
 @media (prefers-color-scheme: dark) { 
     body {
         /* Keeping Spectre's color scheme */
         background: #303742;
+        color: #f7f8f9;
+    }
+
+    small.tag {
         color: #f7f8f9;
     }
 

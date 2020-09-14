@@ -35,7 +35,9 @@ function _printShow ($show, $time) {
                     </td>
                     <td>
                         <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
-                            <?php echo $show->media->title->romaji;
+                            <?php
+                            if ($show->episode == $show->media->episodes && $show->episode != 1) echo '<small class="tag">[END]</small> ';
+                            echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
                                 strtolower($show->media->title->english) != strtolower($show->media->title->romaji))

@@ -35,7 +35,8 @@ function _printShow ($show, $time, $isNew=false) {
                     <td>
                         <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
                             <?php
-                            if ($isNew) echo '<small>[NEW]</small> ';
+                            if ($show->episode == $show->media->episodes && $show->episode != 1) echo '<small class="tag">[END]</small> ';
+                            if ($isNew) echo '<small class="tag">[NEW]</small> ';
                             echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
