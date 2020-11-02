@@ -55,6 +55,9 @@ function _malSync ($str) {
     $re = '/malSync::(.*)::/';
     preg_match($re, $str, $matches, PREG_OFFSET_CAPTURE, 0);
     $url = base64_decode($matches[1][0]);
+    if (substr($url, 0, 1) == '{') {
+       $url = json_decode($url, true)['u'];
+    }
     $domain = parse_url($url, PHP_URL_HOST);
     return [
       "url" => $url,
