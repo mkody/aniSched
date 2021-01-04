@@ -32,7 +32,7 @@
 - Sunday for currently airing anime, Saturday for the rest
 - Start at 2pm (`$startHour`)
 - Add breaks:
-  - Between 2 to 3 hours since start (goutay)
+  - Between 2 to 3 hours since start (snacks)
   - Between 4.5 to 7 hours since start (diner)  
     (did bump resume time to 8.5 on Saturday because I have a radio show)
 
