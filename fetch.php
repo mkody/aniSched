@@ -1,6 +1,6 @@
 <?php
 if (PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) die('cli only');
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/funcs.php';
 
 function sortByAirTime($a, $b) {
     $a = $a->airingAt;
@@ -10,8 +10,6 @@ function sortByAirTime($a, $b) {
     return ($a < $b) ? -1 : 1;
 }
 
-// Load up the HTTP client
-$http = new \GuzzleHttp\Client;
 // Load our access token from the login
 $accessToken = file_get_contents(__DIR__ . '/token.txt');
 // Create object where our schedule is saved
@@ -26,21 +24,11 @@ $j->dates = array(
 
 // Ger our AniChart user and highlighted shows
 $query = file_get_contents(__DIR__ . '/queries/anichart.graphql');
-$response = $http->request('POST', 'https://graphql.anilist.co', [
-    'headers' => [
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-    ],
-    'json' => [
-        'query' => $query,
-        'variables' => [],
-    ]
-]);
+$response = graphql('https://graphql.anilist.co', $query, '{}', $accessToken);
 
 // Save user id and shows in green
-$user = json_decode($response->getBody())->data->AniChartUser->user->id;
-$hls = json_decode($response->getBody())->data->AniChartUser->highlights;
+$user = $response->data->AniChartUser->user->id;
+$hls = $response->data->AniChartUser->highlights;
 $ids = [];
 foreach($hls as $show => $status) {
     if ($status == 'green') $ids[] = (int) $show;
@@ -52,21 +40,11 @@ $variables = [
     "user" => $user,
     "page" => 1
 ];
-$response = $http->request('POST', 'https://graphql.anilist.co', [
-    'headers' => [
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-    ],
-    'json' => [
-        'query' => $query,
-        'variables' => $variables,
-    ]
-]);
+$response = graphql('https://graphql.anilist.co', $query, json_encode($variables), $accessToken);
 
 // Save anything that isn't a movie or manga from our watch list
 $shows = [];
-$wL = json_decode($response->getBody())->data->Page->mediaList;
+$wL = $response->data->Page->mediaList;
 foreach($wL as $s) {
     if ($s->media->format == 'MOVIE' ||
         $s->media->format == 'MANGA') continue;
@@ -81,21 +59,11 @@ $variables = [
     "page" => 1,
     "listIds" => $ids
 ];
-$response = $http->request('POST', 'https://graphql.anilist.co', [
-    'headers' => [
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-    ],
-    'json' => [
-        'query' => $query,
-        'variables' => $variables,
-    ]
-]);
+$response = graphql('https://graphql.anilist.co', $query, json_encode($variables), $accessToken);
 
 // Make our Sunday schedule from what's airing
 $airing = [];
-$sch = json_decode($response->getBody())->data->Page->airingSchedules;
+$sch = $response->data->Page->airingSchedules;
 foreach($sch as $s) {
     // Skip movies
     if ($s->media->format == 'MOVIE') continue;
