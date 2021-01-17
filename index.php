@@ -83,8 +83,10 @@ foreach ($period as $dt) {
     $m = 0;
     $i = 0;
 
-    if ($dt->format('N') >= 6) {
-        $min += ceil(count($shows->catchup) / 2);
+    $maxTS = $dt->getTimestamp() + 86400; // Get maximum timestamp for today
+
+    if ($dt->format('N') == 6) { // Change min and start hour on Saturday
+        $min += floor(count($shows->catchup) / 2);
         $startHour = $weekendStartHour;
     }
 ?>
@@ -100,37 +102,58 @@ foreach ($period as $dt) {
             <tbody>
 <?php
     foreach ($shows->airing as $show) {
-        $air = $show->airingAt + 7200; // Add 2 hours for the release delay
-        $dt->setTime($startHour, $m, 00);
+        // If it airs today
+        if ($show->airingAt < $maxTS) {
+            $air = $show->airingAt + 3600; // Add 1 hour for the release delay
 
-        if ($air < $dt->getTimestamp()) {
-            _printShow($show, $dt, true);
-            $shows->airing = unsetValue($shows->airing, $show);
+            while (true) {
+                $dt->setTime($startHour, $m, 00);
 
-            $m += _dur($show->media->duration);
-            $i++;
+                if ($air < $dt->getTimestamp()) {
+                    // If it can be added directly now in the schedule, do it
+                    _printShow($show, $dt, true);
+                    $shows->airing = unsetValue($shows->airing, $show);
+
+                    $m += _dur($show->media->duration);
+                    $i++;
+                    break;
+                } else if ($i < ($min - 1) && count($shows->catchup) > 0) {
+                    // Or try to put an off-season anime to fill the time
+                    // if we've not reached $min yet and if there's some left
+                    foreach ($shows->catchup as $showC) {
+                        _printShow($showC, $dt);
+                        $shows->catchup = unsetValue($shows->catchup, $showC);
+
+                        $m += _dur($showC->media->duration);
+                        $i++;
+                        break;
+                    }
+                } else {
+                    // No more off-season anime left or we got our minimum? Then just add it
+                    $dt->setTimestamp($air);
+                    _printShow($show, $dt, true);
+                    $shows->airing = unsetValue($shows->airing, $show);
+
+                    $m += _dur($show->media->duration);
+                    $i++;
+                    break;
+                }
+            }
         }
     }
 
-    foreach ($shows->catchup as $show) {
+    // In case no new episode today fill with off-season anime if there's some and
+    // - either we didnt' reach the minimum today
+    // - or we're sunday and we dump the rest
+    while (count($shows->catchup) > 0 && ($i < $min || $dt->format('N') == 7)) {
         $dt->setTime($startHour, $m, 00);
-
-        if ($i < $min) {
+        foreach ($shows->catchup as $show) {
             _printShow($show, $dt);
             $shows->catchup = unsetValue($shows->catchup, $show);
 
             $m += _dur($show->media->duration);
             $i++;
-        }
-    }
-
-    // Sunday leftovers
-    if ($dt->format('N') == 7) {
-        foreach ($shows->airing as $show) {
-            $dt->setTimestamp($show->airingAt + 7200); // Add 2 hours for the release delay
-            _printShow($show, $dt, true);
-            $shows->airing = unsetValue($shows->airing, $show);
-            $m += _dur($show->media->duration);
+            break;
         }
     }
 ?>
