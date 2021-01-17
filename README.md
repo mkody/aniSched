@@ -4,7 +4,9 @@
 - Make sure `token.txt` can't be reached
 - Make sure PHP can write in the folder
 - Pull nodejs deps for our base CSS (`yarn` or `npm i`)
-- Copy `secrets.php.dist` to `secrets.php` and fill the details
+- Copy `secrets.php.dist` to `secrets.php` and edit it
+  - Set `$client_id` and `$client_secret` from your [AniList app](https://anilist.co/settings/developer)
+  - Set `$redirect_uri` to the URL to redirect back to the `login.php` page
 - Go to `/login.php` in your browser and login to AniList
 - Launch `php fetch.php` in CLI
 - Open `/index.php` in your browser to see the results
