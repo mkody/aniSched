@@ -72,6 +72,12 @@ function _icon ($domain) {
         case 'nyaa.si':
         case 'www.nyaa.si':
             return 'icons/nyaasi.png';
+        case 'twist.moe':
+        case 'www.twist.moe':
+            return 'icons/twist.png';
+        case 'aniwatch.me':
+        case 'www.aniwatch.me':
+            return 'icons/aniwatch.png';
         default:
             return 'https://www.google.com/s2/favicons?domain=' . $domain;
     }
