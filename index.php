@@ -88,7 +88,7 @@ foreach ($period as $dt) {
         $startHour = $weekendStartHour;
     }
 ?>
-        <h3><?= $dt->format("l d") ?></h3>
+        <h3 id="<?= $dt->format("d") ?>"><?= $dt->format("l d") ?></h3>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -102,6 +102,7 @@ foreach ($period as $dt) {
     foreach ($shows->airing as $show) {
         $air = $show->airingAt + 7200; // Add 2 hours for the release delay
         $dt->setTime($startHour, $m, 00);
+
         if ($air < $dt->getTimestamp()) {
             _printShow($show, $dt, true);
             $shows->airing = unsetValue($shows->airing, $show);
