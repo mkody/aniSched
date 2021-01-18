@@ -142,8 +142,8 @@ foreach ($period as $dt) {
         }
     }
 
-    // In case no new episode today fill with off-season anime if there's some and
-    // - either we didnt' reach the minimum today
+    // In case of no new episode that day, fill with off-season anime if there's some and
+    // - either we didn't reach the minimum today
     // - or we're sunday and we dump the rest
     while (count($shows->catchup) > 0 && ($i < $min || $dt->format('N') == 7)) {
         $dt->setTime($startHour, $m, 00);
