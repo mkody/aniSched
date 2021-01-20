@@ -2,6 +2,9 @@
 if (PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) die('cli only');
 require_once __DIR__ . '/funcs.php';
 
+// Don't worry too much, it's to keep strtotime working properly
+date_default_timezone_set('UTC');
+
 function sortByAirTime($a, $b) {
     $a = $a->airingAt;
     $b = $b->airingAt;
