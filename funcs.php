@@ -78,6 +78,9 @@ function _icon ($domain) {
         case 'aniwatch.me':
         case 'www.aniwatch.me':
             return 'icons/aniwatch.png';
+        case 'app.plex.tv':
+        case 'plex.amber.kdy.ch':
+            return 'icons/plex.png';
         default:
             return 'https://www.google.com/s2/favicons?domain=' . $domain;
     }
