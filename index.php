@@ -1,10 +1,6 @@
 <?php
+require 'config.php';
 require 'funcs.php';
-
-// sup
-$startHour = 21;
-$weekendStartHour = 14;
-$min = 2; // how much anime should you *at least* watch every day
 
 // template
 function _printShow ($show, $time, $isNew=false) {
@@ -63,12 +59,15 @@ function _printShow ($show, $time, $isNew=false) {
 <body>
     <header class="navbar">
         <section class="navbar-section">
-            <a href="weekend.php">Weekend view</a>
+            <!-- Left for alignment -->
         </section>
         <section class="navbar-center">
             <h1>aniSched</h1>
         </section>
-        <section class="navbar-section">
+        <section class="navbar-section custom-links">
+<?php foreach($customLinks as $title => $href) { ?>
+            <span><a href="<?= $href ?>"><?= $title ?></a></span>
+<?php } ?>
         </section>
     </header>
     <div class="container">

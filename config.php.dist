@@ -1,0 +1,16 @@
+<?php
+// For login and fetch
+$client_id = '1234';
+$client_secret = 'aVerySecretString';
+$redirect_uri = 'http://localhost/login.php';
+
+// Links on the top-right part of the pages
+$customLinks = array(
+  'AniList Profile' => 'https://anilist.co/user/kdy/',
+  'aniSeasons' => '/aniSeasons/'
+);
+
+// Config to display the schedule
+$startHour = 21;
+$weekendStartHour = 14;
+$min = 3; // how much anime should you *at least* watch every day
