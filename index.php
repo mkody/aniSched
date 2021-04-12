@@ -77,6 +77,7 @@ $startDate = new DateTime('@' . $shows->dates->start);
 $endDate = new DateTime('@' . $shows->dates->end);
 $interval = DateInterval::createFromDateString('1 day');
 $period = new DatePeriod($startDate, $interval, $endDate);
+$utcDiff = (new DateTimeZone($tz))->getOffset((new DateTime('now', (new DateTimeZone('UTC')))));
 
 foreach ($period as $dt) {
     $m = 0;
@@ -103,12 +104,13 @@ foreach ($period as $dt) {
     foreach ($shows->airing as $show) {
         // If it airs today
         if ($show->airingAt < $maxTS) {
-            $air = $show->airingAt + 3600; // Add 1 hour for the release delay
+            // Add your difference with UTC + 1 hour for the release delay
+            $air = $show->airingAt + $utcDiff + 3600;
 
             while (true) {
                 $dt->setTime($startHour, $m, 00);
 
-                if ($air < $dt->getTimestamp()) {
+                if ($air <= $dt->getTimestamp()) {
                     // If it can be added directly now in the schedule, do it
                     _printShow($show, $dt, true);
                     $shows->airing = unsetValue($shows->airing, $show);
@@ -128,7 +130,8 @@ foreach ($period as $dt) {
                         break;
                     }
                 } else {
-                    // No more off-season anime left or we got our minimum? Then just add it
+                    // No more off-season anime left or we got our minimum?
+                    // Then just add it at the set time
                     $dt->setTimestamp($air);
                     _printShow($show, $dt, true);
                     $shows->airing = unsetValue($shows->airing, $show);
@@ -142,8 +145,8 @@ foreach ($period as $dt) {
     }
 
     // In case of no new episode that day, fill with off-season anime if there's some and
-    // - either we didn't reach the minimum today
-    // - or we're sunday and we dump the rest
+    // - if either we didn't reach the minimum today
+    // - or if we're sunday (so we dump the rest)
     while (count($shows->catchup) > 0 && ($i < $min || $dt->format('N') == 7)) {
         $dt->setTime($startHour, $m, 00);
         foreach ($shows->catchup as $show) {

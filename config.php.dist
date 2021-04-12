@@ -11,6 +11,7 @@ $customLinks = array(
 );
 
 // Config to display the schedule
+$tz = 'Europe/Paris'; // Set your timezone
 $startHour = 21;
 $weekendStartHour = 14;
 $min = 3; // how much anime should you *at least* watch every day
