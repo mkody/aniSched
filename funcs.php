@@ -94,6 +94,7 @@ function _malSync ($str) {
     if (substr($url, 0, 1) == '{') {
        $url = json_decode($url, true)['u'];
     }
+    $url = preg_replace('/undefined\/?$/m', '', $url);
     $domain = parse_url($url, PHP_URL_HOST);
     return [
       'url' => $url,
