@@ -86,8 +86,17 @@ foreach ($period as $dt) {
     $maxTS = $dt->getTimestamp() + 86400; // Get maximum timestamp for today
 
     if ($dt->format('N') == 6) { // Change min and start hour on Saturday
-        $min += floor(count($shows->catchup) / 2);
         $startHour = $weekendStartHour;
+
+        // We'll try to even out Staturday and Sunday
+        $airingSat = 0;
+        foreach ($shows->airing as $show) {
+            if ($show->airingAt < $maxTS) $airingSat++;
+        }
+        $airingSun = count($shows->airing) - $airingSat;
+
+        // Not sure why the +2, but that way it appears even as tested for now
+        $min = floor((count($shows->catchup) - ($airingSat - $airingSun) + 2) / 2);
     }
 ?>
         <h3 id="<?= $dt->format("d") ?>"><?= $dt->format("l d") ?></h3>
