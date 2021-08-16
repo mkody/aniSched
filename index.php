@@ -95,8 +95,8 @@ foreach ($period as $dt) {
         }
         $airingSun = count($shows->airing) - $airingSat;
 
-        // Not sure why the +1, but that way it appears even as tested for now
-        $min = floor((count($shows->catchup) - ($airingSat - $airingSun) + 1) / 2);
+        // I'm just trying things to make the number of shows close to even on Sat. and Sun.
+        $min = floor((count($shows->catchup) - ($airingSun - $airingSat) - $airingSat) / 2);
     }
 ?>
         <h3 id="<?= $dt->format("d") ?>"><?= $dt->format("l d") ?></h3>
