@@ -89,9 +89,26 @@ foreach($shows as $s) {
         continue;
     }
 
+    // Check if it's not a currently airing entry (not found via aniChart)
+    if ($s->media->nextAiringEpisode != null &&
+        $s->media->nextAiringEpisode->airingAt != null &&
+        $s->media->nextAiringEpisode->episode = ($s->progress + 1) &&
+        $s->media->nextAiringEpisode->airingAt < $endDate) {
+
+        // Create our pseudo-airing object
+        $a = new stdClass();
+        $a->id = 0;
+        $a->airingAt = $s->media->nextAiringEpisode->airingAt;
+        $a->episode = $s->progress + 1;
+        $a->media = $s->media;
+        $a->notes = $s->notes;
+        $airing[$s->media->id] = $a;
+        continue;
+    }
+
     // Skip if future episode didn't air yet
     if ($s->media->nextAiringEpisode != null &&
-        $s->media->nextAiringEpisode->episode <= $s->progress + 1) continue;
+        $s->media->nextAiringEpisode->episode <= ($s->progress + 1)) continue;
 
     // Uniformize
     $s->episode = $s->progress + 1;

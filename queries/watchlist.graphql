@@ -20,6 +20,7 @@ query ($page: Int, $user: Int) {
         nextAiringEpisode {
           id
           episode
+          airingAt
         }
       }
     }
