@@ -33,6 +33,7 @@ function _printShow ($show, $time, $isNew=false) {
                             <?php
                             if ($show->episode == $show->media->episodes && $show->episode != 1) echo '<small class="tag">[END]</small> ';
                             if ($isNew) echo '<small class="tag">[NEW]</small> ';
+                            if (property_exists($show, 'status') && $show->status == 'REPEATING') echo '<small class="tag">🔁 </small> ';
                             echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
