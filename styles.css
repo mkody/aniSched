@@ -36,13 +36,17 @@ th.scol {
 }
 
 th.tcol {
-    text-align: center;
     width: 60px;
 }
 
 th.ecol {
     text-align: center;
     width: 80px;
+}
+
+.tags {
+    font-size: larger;
+    text-align: right;
 }
 
 img.icon {
@@ -54,11 +58,6 @@ img.icon {
 i.noicon {
     display: inline-block;
     width: 16px;
-}
-
-.tags {
-    font-size: larger;
-    text-align: right;
 }
 
 /* Dark color scheme */
