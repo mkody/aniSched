@@ -31,7 +31,17 @@ a:hover {
     padding: 0 0.3rem;
 }
 
+th.scol {
+    width: 70px;
+}
+
 th.tcol {
+    text-align: center;
+    width: 60px;
+}
+
+th.ecol {
+    text-align: center;
     width: 80px;
 }
 
@@ -46,8 +56,9 @@ i.noicon {
     width: 16px;
 }
 
-small.tag {
-    color: initial;
+.tags {
+    font-size: larger;
+    text-align: right;
 }
 
 /* Dark color scheme */

@@ -6,6 +6,13 @@ require 'funcs.php';
 function _printShow ($show, $time, $isNew=false) {
 ?>
                 <tr>
+                    <td class="tags">
+                        <?php
+                            if ($show->episode == $show->media->episodes && $show->episode != 1) echo '&#x1F51A;';
+                            if ($isNew) echo '&#x1F195;';
+                            if (property_exists($show, 'status') && $show->status == 'REPEATING') echo '&#x1F501;';
+?>
+                    </td>
                     <td>
                         <time><?= $time->format('H:i') ?></time>
                     </td>
@@ -31,9 +38,6 @@ function _printShow ($show, $time, $isNew=false) {
                     <td>
                         <a target="_blank" href="https://anilist.co/anime/<?= $show->media->id ?>">
                             <?php
-                            if ($show->episode == $show->media->episodes && $show->episode != 1) echo '<small class="tag">[END]</small> ';
-                            if ($isNew) echo '<small class="tag">[NEW]</small> ';
-                            if (property_exists($show, 'status') && $show->status == 'REPEATING') echo '<small class="tag">🔁 </small> ';
                             echo $show->media->title->romaji;
                             // If there's an English title and it's not the same as the Romaji one...
                             if ($show->media->title->english &&
@@ -104,8 +108,9 @@ foreach ($period as $dt) {
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
+                    <th class="scol">&nbsp;</th>
                     <th class="tcol">Time</th>
-                    <th class="tcol">Episode</th>
+                    <th class="ecol">Episode</th>
                     <th>Name</th>
                 </tr>
             </thead>
