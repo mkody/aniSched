@@ -31,20 +31,20 @@ a:hover {
     padding: 0 0.3rem;
 }
 
-th.scol {
+th.tags {
     width: 70px;
 }
 
-th.tcol {
+th.time {
     width: 60px;
 }
 
-th.ecol {
+th.progress {
     text-align: center;
     width: 80px;
 }
 
-.tags {
+td.tags {
     font-size: larger;
     text-align: right;
 }
@@ -58,6 +58,37 @@ img.icon {
 i.noicon {
     display: inline-block;
     width: 16px;
+}
+
+/* For small screens */
+@media screen and (max-width: 600px) {
+    th.time,
+    th.progress,
+    td.time,
+    td.progress {
+        font-size: small;
+    }
+
+    th.tags {
+        width: 40px;
+    }
+
+    th.time {
+        width: 50px;
+    }
+
+    th.progress {
+        width: 65px;
+    }
+
+    td.tags {
+        font-size: initial;
+    }
+
+    img.icon {
+        height: 12px;
+        width: 12px;
+    }
 }
 
 /* Dark color scheme */

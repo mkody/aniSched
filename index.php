@@ -13,10 +13,10 @@ function _printShow ($show, $time, $isNew=false) {
                             if (property_exists($show, 'status') && $show->status == 'REPEATING') echo '&#x1F501;';
 ?>
                     </td>
-                    <td>
+                    <td class="time">
                         <time><?= $time->format('H:i') ?></time>
                     </td>
-                    <td>
+                    <td class="progress">
 <?php
         if (strpos($show->notes, 'malSync::') !== false) {
             $mal = _malSync($show->notes);
@@ -59,7 +59,7 @@ function _printShow ($show, $time, $isNew=false) {
     <title>aniSched</title>
 
     <link rel="stylesheet" href="node_modules/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1">
 </head>
 <body>
     <header class="navbar">
@@ -108,9 +108,9 @@ foreach ($period as $dt) {
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th class="scol">&nbsp;</th>
-                    <th class="tcol">Time</th>
-                    <th class="ecol">Episode</th>
+                    <th class="tags">&nbsp;</th>
+                    <th class="time">Time</th>
+                    <th class="progress">Episode</th>
                     <th>Name</th>
                 </tr>
             </thead>
