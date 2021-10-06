@@ -89,6 +89,10 @@ i.noicon {
         height: 12px;
         width: 12px;
     }
+
+    i.noicon {
+        width: 12px;
+    }
 }
 
 /* Dark color scheme */
