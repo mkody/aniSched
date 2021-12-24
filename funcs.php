@@ -56,6 +56,7 @@ function _icon ($domain) {
     switch ($domain) {
         case 'crunchyroll.com':
         case 'www.crunchyroll.com':
+        case 'beta.crunchyroll.com':
             return 'icons/crunchyroll.png';
         case 'animedigitalnetwork.fr':
         case 'www.animedigitalnetwork.fr':
