@@ -63,7 +63,7 @@ function _printShow ($show, $time, $isNew=false) {
 </head>
 <body>
     <header class="navbar">
-        <section class="navbar-section">
+        <section class="navbar-section hide-md">
             <!-- Left for alignment -->
         </section>
         <section class="navbar-center">
