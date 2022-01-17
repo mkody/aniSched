@@ -146,8 +146,13 @@ foreach ($period as $dt) {
                     }
                 } else {
                     // No more off-season anime left or we got our minimum?
-                    // Then just add it at the set time
-                    $dt->setTimestamp($air);
+                    // Then just add it at when it should be up
+                    // First we shift our time in the schedule
+                    $diffShift = $air - $dt->getTimestamp();
+                    $m += floor($diffShift / 60);
+                    $dt->setTime($startHour, $m, 00);
+
+                    // And then proceed like normal
                     _printShow($show, $dt, true);
                     $shows->airing = unsetValue($shows->airing, $show);
 
