@@ -103,6 +103,10 @@ foreach ($period as $dt) {
         // I'm trying to make the number of shows close to even on Sat. and Sun.
         $min = floor((count($shows->catchup) + $airingSun) / 2);
     }
+
+    if ($dt->format('N') == 7) { // No min on Sunday, just dump the rest
+        $min = 99;
+    }
 ?>
         <h3 id="<?= $dt->format("d") ?>"><?= $dt->format("l d") ?></h3>
         <table class="table table-striped table-hover">
@@ -164,9 +168,8 @@ foreach ($period as $dt) {
         }
     }
 
-    // In case of no new episode that day, fill with off-season anime if there's some and
-    // - if either we didn't reach the minimum today
-    // - or if we're sunday (so we dump the rest)
+    // In case of no new episode that day, fill with off-season anime if
+    // we didn't reach the minimum today
     while (count($shows->catchup) > 0 && ($i < $min || $dt->format('N') == 7)) {
         $dt->setTime($startHour, $m, 00);
         foreach ($shows->catchup as $show) {
