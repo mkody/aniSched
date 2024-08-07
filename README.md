@@ -1,7 +1,7 @@
 # aniSched
 
 - Put this project in a webserver with PHP
-- Make sure `token.txt` can't be reached
+- Make sure `.token` can't be reached
 - Make sure PHP can write in the folder
 - Pull nodejs deps for our base CSS (`yarn` or `npm i`)
 - Copy `config.php.dist` to `config.php` and edit it

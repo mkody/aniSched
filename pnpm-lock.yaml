@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      spectre.css:
+        specifier: ^0.5.9
+        version: 0.5.9
+
+packages:
+
+  spectre.css@0.5.9:
+    resolution: {integrity: sha512-9jUqwZmCnvflrxFGcK+ize43TvjwDjqMwZPVubEtSIHzvinH0TBUESm1LcOJx3Ur7bdPaeOHQIjOqBl1Y5kLFw==}
+
+snapshots:
+
+  spectre.css@0.5.9: {}

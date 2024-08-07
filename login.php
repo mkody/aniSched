@@ -1,5 +1,5 @@
 <?php
-if (file_exists(__DIR__ . '/token.txt')) die('already logged in');
+if (file_exists(__DIR__ . '/.token')) die('already logged in');
 
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/funcs.php';
@@ -13,7 +13,7 @@ $query = [
 $loginURL = 'https://anilist.co/api/v2/oauth/authorize?' . urldecode(http_build_query($query));
 
 if (isset($_GET['code'])) {
-    $tk = fopen(__DIR__ . '/token.txt', 'w') or die('Unable to write!');
+    $tk = fopen(__DIR__ . '/.token', 'w') or die('Unable to write!');
 
     $curl = curl_init();
     curl_setopt_array($curl, array(

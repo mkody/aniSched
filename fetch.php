@@ -14,7 +14,7 @@ function sortByAirTime($a, $b) {
 }
 
 // Load our access token from the login
-$accessToken = file_get_contents(__DIR__ . '/token.txt');
+$accessToken = file_get_contents(__DIR__ . '/.token');
 // Create object where our schedule is saved
 $j = new stdClass();
 // Set bounds for airing schedule
