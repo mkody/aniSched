@@ -6,13 +6,11 @@ require 'funcs.php';
 function _printShow ($show, $time, $isNew=false) {
 ?>
                 <tr>
-                    <td class="tags">
-                        <?php
+                    <td class="tags"><?php
                             if ($show->episode == $show->media->episodes && $show->episode != 1) echo '&#x1F51A;';
                             if ($isNew) echo '&#x1F195;';
                             if (property_exists($show, 'status') && $show->status == 'REPEATING') echo '&#x1F501;';
-?>
-                    </td>
+                    ?></td>
                     <td class="time">
                         <time><?= $time->format('H:i') ?></time>
                     </td>
