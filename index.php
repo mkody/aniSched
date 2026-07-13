@@ -105,9 +105,7 @@ foreach ($period as $dt) {
 
     // I'm trying to make the number of shows close to even on Sat. and Sun.
     $min = floor((count($shows->catchup) + $airingSun) / 2);
-  }
-
-  if ($dt->format('N') == 7) { // No min on Sunday, just dump the rest
+  } elseif ($dt->format('N') == 7) { // No min on Sunday, just dump the rest
     $min = 99;
   }
 ?>
@@ -140,7 +138,7 @@ foreach ($period as $dt) {
           $m += _dur($show->media->duration);
           $i++;
           break;
-        } else if ($i < ($min - 1) && count($shows->catchup) > 0) {
+        } elseif ($i < ($min - 1) && count($shows->catchup) > 0) {
           // Or try to put an off-season anime to fill the time
           // if we've not reached $min yet and if there's some left
           foreach ($shows->catchup as $showC) {
