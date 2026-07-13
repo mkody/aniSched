@@ -1,120 +1,120 @@
 body {
-    padding-bottom: 2em;
+  padding-bottom: 2em;
 }
 
 h1 {
-    margin: 0;
-    padding: 0 0.2em;
+  margin: 0;
+  padding: 0 0.2em;
 }
 
 h3 {
-    margin: 1em 0 0;
+  margin: 1em 0 0;
 }
 
 a,
 a:active,
 a:focus,
 a:hover {
-    /* Same as a:visited */
-    color: #807fe2;
+  /* Same as a:visited */
+  color: #807fe2;
 }
 
 .navbar {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 .navbar-section {
-    padding: 0 1em;
+  padding: 0 1em;
 }
 
 .custom-links span:not(:last-child)::after {
-    content: '·';
-    padding: 0 0.3rem;
+  content: "·";
+  padding: 0 0.3rem;
 }
 
 th.tags {
-    width: 70px;
+  width: 70px;
 }
 
 th.time {
-    width: 60px;
+  width: 60px;
 }
 
 th.progress {
-    text-align: center;
-    width: 80px;
+  text-align: center;
+  width: 80px;
 }
 
 td.tags {
-    font-size: larger;
-    text-align: right;
+  font-size: larger;
+  text-align: right;
 }
 
 img.icon {
-    height: 16px;
-    vertical-align: -2px;
-    width: 16px;
+  height: 16px;
+  vertical-align: -2px;
+  width: 16px;
 }
 
 i.noicon {
-    display: inline-block;
-    width: 16px;
+  display: inline-block;
+  width: 16px;
 }
 
 /* For small screens */
 @media screen and (max-width: 600px) {
-    th.time,
-    th.progress,
-    td.time,
-    td.progress {
-        font-size: small;
-    }
+  th.time,
+  th.progress,
+  td.time,
+  td.progress {
+    font-size: small;
+  }
 
-    th.tags {
-        width: 40px;
-    }
+  th.tags {
+    width: 40px;
+  }
 
-    th.time {
-        width: 50px;
-    }
+  th.time {
+    width: 50px;
+  }
 
-    th.progress {
-        width: 65px;
-    }
+  th.progress {
+    width: 65px;
+  }
 
-    td.tags {
-        font-size: initial;
-    }
+  td.tags {
+    font-size: initial;
+  }
 
-    img.icon {
-        height: 12px;
-        width: 12px;
-    }
+  img.icon {
+    height: 12px;
+    width: 12px;
+  }
 
-    i.noicon {
-        width: 12px;
-    }
+  i.noicon {
+    width: 12px;
+  }
 }
 
 /* Dark color scheme */
-@media (prefers-color-scheme: dark) { 
-    body {
-        /* Keeping Spectre's color scheme */
-        background: #303742;
-        color: #f7f8f9;
-    }
+@media (prefers-color-scheme: dark) {
+  body {
+    /* Keeping Spectre's color scheme */
+    background: #303742;
+    color: #f7f8f9;
+  }
 
-    small.tag {
-        color: #f7f8f9;
-    }
+  small.tag {
+    color: #f7f8f9;
+  }
 
-    .table.table-striped tbody tr:nth-of-type(odd) {
-        /* From Bootstrap 4 */
-        background: rgba(255, 255, 255, 0.05);
-    }
+  .table.table-striped tbody tr:nth-of-type(odd) {
+    /* From Bootstrap 4 */
+    background: rgba(255, 255, 255, 0.05);
+  }
 
-    .table.table-hover tbody tr:hover {
-        /* From Bootstrap 4 */
-        background: rgba(255, 255, 255, 0.075);
-    }
+  .table.table-hover tbody tr:hover {
+    /* From Bootstrap 4 */
+    background: rgba(255, 255, 255, 0.075);
+  }
 }
