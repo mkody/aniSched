@@ -105,3 +105,22 @@ function _malSync ($str) {
     'icon' => _icon($domain)
   ];
 }
+
+function _icalFold($line) {
+  // iCal lines shouldn't be too long (~75 chars)
+  $out = '';
+  while (strlen($line) > 75) {
+    $out .= substr($line, 0, 75) . "\r\n ";
+    $line = substr($line, 75);
+  }
+  return $out . $line . "\r\n";
+}
+
+function _icalEsc($s) {
+  // Bunch of escaping
+  $s = str_replace('\\', '\\\\', $s);
+  $s = str_replace("\n", '\\n', $s);
+  $s = str_replace(',', '\\,', $s);
+  $s = str_replace(';', '\\;', $s);
+  return $s;
+}
